@@ -1,0 +1,47 @@
+<style type="text/css">
+  .error {
+    color: red;
+  }
+</style>
+
+<h1>Contact</h1>
+<form action="/" method="POST" novalidate>
+  <div>
+    {{ with .Errors.Name }}
+    <p class="error">{{ . }}</p>
+    {{ end }}
+    <label>Your Name:</label>
+    <input type="email" name="name" value="{{ .Name }}">
+  </div>
+  <div>
+    {{ with .Errors.Email }}
+    <p class="error">{{ . }}</p>
+    {{ end }}
+    <label>Your email:</label>
+    <input type="email" name="email" value="{{ .Email }}">
+  </div>
+  <div>
+    {{ with .Errors.Phone }}
+    <p class="error">{{ . }}</p>
+    {{ end }}
+    <label>Your Phone:</label>
+    <input type="tel" name="phone" value="{{ .Phone }}">
+  </div>
+  <div>
+    {{ with .Errors.CompanyName }}
+    <p class="error">{{ . }}</p>
+    {{ end }}
+    <label>Your Company Name:</label>
+    <input type="text" name="companyname" value="{{ .CompanyName }}">
+  </div>
+  <div>
+    {{ with .Errors.Message }}
+    <p class="error">{{ . }}</p>
+    {{ end }}
+    <label>Your message:</label>
+    <textarea name="message">{{ .Message }}</textarea>
+  </div>
+  <div>
+    <input type="submit" value="Send message">
+  </div>
+</form>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Input Type Submit</title>
+  </head>
+  <body>
+    <!-- Check if there is Data sent -->
+    {{if .}}
+    <main>
+      <p><strong>variable message </strong>(indentifiers) and <em>values</em>:</p>
+
+      <!-- Range over the map, range over key and value -->
+      {{range $key, $value := .}}
+
+      <!-- Print out a key -->
+      <p><strong>{{$key}}</strong></p>
+      <ul>
+
+        <!-- Range over values, because valus is a slice -->
+        {{range $value}}
+
+        <!-- print out a data from the range -->
+        <li><em>{{.}}</em></li>
+        {{end}}
+      </ul>
+    </main>
+      {{end}}
+
+    {{end}}
+
+    <form   action="/?fname=bond" method="post">
+      <input type="text" name="fname" value="">
+      <input type="text" name="lname" value="">
+      <input type="submit" name="submit-btn" value="onda button">
+
+    </form>
+
+  </body>
+</html>
