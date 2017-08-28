@@ -1,27 +1,40 @@
 package main
 
 import (
-	"crypto/sha256"
+	"crypto/md5"
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 )
 
-func main() {
-	f, err := os.Open(os.Args[1])
+func md5file(fileName string) []byte {
+
+	// opens a file
+	f, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
 	}
 
+	// defec close (make sure that the file will get closed)
 	defer f.Close()
 
-	h := sha256.New()
-
-	// copy can be called on fnv.New64, because fnv.New64 embeds a hash interface
-	// which embeds a writer interface.
+	// create a new hash.
+	h := md5.New()
 	io.Copy(h, f)
+	return h.Sum(nil)
+}
+func main() {
+	// this will walk the filepath which is "."
+	filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
 
-	// h.Sum(nil) - nil there is because you can give it some data
-	fmt.Printf("%x", h.Sum(nil))
+		// this path variable is from walk func I can also use info.Name()
+		bs := md5file(path)
+		fmt.Printf("%x\n", bs)
+		return nil
+	})
 
 }
