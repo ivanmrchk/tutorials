@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -22,11 +23,16 @@ type newPlace struct {
 	Types       [1]string `json:"types"`
 }
 
+func check(err error) {
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+}
 func main() {
 	// api := "AIzaSyBqZQfglwk4iAaO3RT51nEhnuyE3hZXNrY"
 	requestUrl := "https://maps.googleapis.com/maps/api/place/add/json?key=AIzaSyBL_7YvhKHVVdThonbVenBEJ92emxL4TUo"
 
-	types := [1]string{"bank"}
+	types := [1]string{"storage"}
 	obj := newPlace{
 		Location: latlng{
 			Lat: 52.1502824,
@@ -37,9 +43,7 @@ func main() {
 	}
 
 	bodyBytes, err := json.Marshal(&obj)
-	if err != nil {
-		fmt.Println(err)
-	}
+	check(err)
 	body := bytes.NewReader(bodyBytes)
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", requestUrl, body)
@@ -48,11 +52,10 @@ func main() {
 		fmt.Println(err)
 	}
 	rsp, err := client.Do(req)
+	check(err)
 	defer rsp.Body.Close()
 
 	body_byte, err := ioutil.ReadAll(rsp.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
+	check(err)
 	fmt.Println(string(body_byte))
 }

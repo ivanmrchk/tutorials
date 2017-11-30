@@ -11,6 +11,11 @@ import (
 	"googlemaps.github.io/maps"
 )
 
+func check(err error) {
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+}
 func main() {
 	address := geocoder.Address{
 		// Street:  "Central Park West",
@@ -25,25 +30,19 @@ func main() {
 	newLocation := newLat + "," + newLng
 
 	c, err := maps.NewClient(maps.WithAPIKey("AIzaSyBL_7YvhKHVVdThonbVenBEJ92emxL4TUo"))
-	if err != nil {
-		log.Fatalf("fatal error: %s", err)
-	}
+	check(err)
 
 	l, err := maps.ParseLatLng(newLocation)
-	if err != nil {
-		log.Fatalf("fatal error: %s", err)
-	}
+	check(err)
 	r := &maps.NearbySearchRequest{
 		Location: &l,
 		// Name:     "some field",
 		Radius: 300000,
-		Type:   "bank",
+		Type:   "storage",
 	}
 
 	route, err := c.NearbySearch(context.Background(), r)
-	if err != nil {
-		log.Fatalf("fatal error: %s", err)
-	}
+	check(err)
 	result := route.Results
 
 	for i := 0; i < len(result); i++ {
