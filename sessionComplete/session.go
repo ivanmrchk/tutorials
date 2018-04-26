@@ -6,16 +6,20 @@ import (
 	"time"
 
 	"github.com/satori/go.uuid"
+	"log"
 )
 
 func getUser(w http.ResponseWriter, req *http.Request) user {
 	// get cookie
 	c, err := req.Cookie("session")
 	if err != nil {
-		sID := uuid.NewV4()
+		sID, err := uuid.NewV4()
 		c = &http.Cookie{
 			Name:  "session",
 			Value: sID.String(),
+		}
+		if err != nil {
+			log.Fatal(err)
 		}
 
 	}
